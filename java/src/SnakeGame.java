@@ -29,12 +29,18 @@ public class SnakeGame {
         int[] tailAndLength = new int[3];
         int length = 0;
 
+        resetCounters();
+
         for (int i = 0; i < game.length; i++) {
             for (int j = 0; j < game[i].length; j++) {
                 if (game[i][j]) {
-                    if (neighbors(i,j) == 1 && i != headPosition[0] && j != headPosition[1])
+                    if (neighbors(i,j) == 1 && i != headPosition[0] && j != headPosition[1]){
+                        tailAndLength[0] = i;
+                        tailAndLength[1] = j;
+                    }
                     length++;
                 }
+                exhaustiveChecks++;
             }
         }
 
@@ -43,20 +49,22 @@ public class SnakeGame {
         return tailAndLength;
     }
 
-    private int[] findTailRecursive(int[] currentPosition, int[] previousPosition) {
-
+    public int[] findTailRecursive(int[] currentPosition, int[] previousPosition) {
+        int tailAndLength[] = new int[3];
+        return tailAndLength;
     }
 
     private void resetCounters() {
-
+        exhaustiveChecks = 0;
+        recursiveChecks = 0;
     }
 
     private static int getRecursiveChecks() {
-
+        return recursiveChecks;
     }
 
     private static int getExhaustiveChecks() {
-
+        return exhaustiveChecks;
     }
 
     public int neighbors(int xCoord, int yCoord) {
