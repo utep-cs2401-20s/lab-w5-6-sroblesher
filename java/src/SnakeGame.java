@@ -49,9 +49,30 @@ public class SnakeGame {
         return tailAndLength;
     }
 
-    public int[] findTailRecursive(int[] currentPosition, int[] previousPosition) {
-        int tailAndLength[] = new int[3];
+    public int[] findTailRecursive() {
+        int tailAndLength[] = {-1, -1, -1};
+        resetCounters();
+
         return tailAndLength;
+    }
+
+    private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
+
+        if (neighbors(currentPosition[0], currentPosition[1]) == 1) {
+            int tailAndLength[] = new int[3];
+            tailAndLength[0] = currentPosition[0];
+            tailAndLength[1] = currentPosition[1];
+            return tailAndLength;
+        }
+
+        if (currentPosition[0]-1 >= 0)
+            if (currentPosition[0]-1 != previousPosition[0] && currentPosition[1] != previousPosition[1]) {
+                recursiveChecks++;
+                if (game[currentPosition[0] - 1][currentPosition[1]]) {
+                    findTailRecursive();
+                }
+            }
+
     }
 
     private void resetCounters() {
