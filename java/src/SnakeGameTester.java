@@ -2,6 +2,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeGameTester {
 
+    /* TESTS FOR FINDING TAIL RECURSIVELY */
+
+    /* First Case: Create a 7x7 boolean board */
     @org.junit.jupiter.api.Test
     void findTailExhaustive1() {
         boolean arr[][] = new boolean[7][7];

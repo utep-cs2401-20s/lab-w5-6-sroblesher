@@ -4,8 +4,6 @@ public class SnakeGame {
     private int[] headPosition;
     private static int exhaustiveChecks;
     private static int recursiveChecks;
-    //Added element
-    private static int lengthRecursive;
 
     //CONSTRUCTORS
     SnakeGame(){
@@ -15,6 +13,7 @@ public class SnakeGame {
     SnakeGame(boolean[][] arr, int xCoord, int yCoord) {
         game = new boolean[arr.length][arr.length];
 
+        //Copy all elements from the given boolean array to the board game
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length; j++) {
                 game[i][j] = arr[i][j];
@@ -57,77 +56,65 @@ public class SnakeGame {
     }
 
     public int[] findTailRecursive() {
-        int tailAndLength[];
         resetCounters();
-        lengthRecursive = 1;
-        recursiveChecks++;
 
-        tailAndLength = findTailRecursive(headPosition, headPosition);
-
-        return tailAndLength;
+        return findTailRecursive(headPosition, headPosition);
     }
 
     private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
+        recursiveChecks++;
+
+        //CHECKING IF IT'S TAIL
         if (neighbors(currentPosition[0], currentPosition[1]) == 1 && recursiveChecks!= 1) {
-            int tailAndLength[] = new int[3];
+            int[] tailAndLength = new int[3];
             tailAndLength[0] = currentPosition[0];
             tailAndLength[1] = currentPosition[1];
-            tailAndLength[2] = lengthRecursive;
-            System.out.println("hi " + lengthRecursive);
+            tailAndLength[2] = getRecursiveChecks();
+
             return tailAndLength;
         }
 
+        //CHECKING UPPER SQUARE
         if (currentPosition[0]-1 >= 0)
             if (currentPosition[0]-1 != previousPosition[0] || currentPosition[1] != previousPosition[1]) {
-                recursiveChecks++;
-                System.out.println((currentPosition[0] - 1) + " " + currentPosition[1]);
                 if (game[currentPosition[0] - 1][currentPosition[1]]) {
-                    System.out.println(currentPosition[0] - 1 + " " + currentPosition[1]);
-                    lengthRecursive++;
-                    int current[] = {currentPosition[0]-1, currentPosition[1]};
-                    //CURRENT IS NOW PREVIOUS
-                    return findTailRecursive(current, currentPosition);
-                }
-            }
-        if (currentPosition[0]+1 < game.length)
-            if (currentPosition[0]+1 != previousPosition[0] || currentPosition[1] != previousPosition[1]) {
-                recursiveChecks++;
-                System.out.println((currentPosition[0] + 1) + " " + currentPosition[1]);
-                if (game[currentPosition[0] + 1][currentPosition[1]]) {
-                    System.out.println(currentPosition[0] + 1 + " " + currentPosition[1]);
-                    lengthRecursive++;
-                    int current[] = {currentPosition[0]+1, currentPosition[1]};
-                    //CURRENT IS NOW PREVIOUS
-                    return findTailRecursive(current, currentPosition);
-                }
-            }
-        if (currentPosition[1]-1 >= 0)
-            if (currentPosition[0] != previousPosition[0] || currentPosition[1]-1 != previousPosition[1]) {
-                recursiveChecks++;
-                System.out.println(currentPosition[0] + " " + (currentPosition[1] - 1));
-                if (game[currentPosition[0]][currentPosition[1]-1]) {
-                    System.out.println(currentPosition[0] + " " + (currentPosition[1] - 1));
-                    lengthRecursive++;
-                    int current[] = {currentPosition[0], currentPosition[1]-1};
-                    //CURRENT IS NOW PREVIOUS
-                    return findTailRecursive(current, currentPosition);
-                }
-            }
-        if (currentPosition[1]+1 < game.length)
-            if (currentPosition[0] != previousPosition[0] || currentPosition[1]+1 != previousPosition[1]) {
-                recursiveChecks++;
-                System.out.println(currentPosition[0] + " " + (currentPosition[1]+1));
-                if (game[currentPosition[0]][currentPosition[1]+1]) {
-                    lengthRecursive++;
-                    System.out.println(currentPosition[0] + " " + (currentPosition[1]+1));
-                    int current[] = {currentPosition[0], currentPosition[1]+1};
+                    int[] current = {currentPosition[0]-1, currentPosition[1]};
                     //CURRENT IS NOW PREVIOUS
                     return findTailRecursive(current, currentPosition);
                 }
             }
 
-        int a[] = {currentPosition[0], currentPosition[1], 1};
-        return a;
+        //CHECKING DOWN SQUARE
+        if (currentPosition[0]+1 < game.length)
+            if (currentPosition[0]+1 != previousPosition[0] || currentPosition[1] != previousPosition[1]) {
+                if (game[currentPosition[0] + 1][currentPosition[1]]) {
+                    int[] current = {currentPosition[0]+1, currentPosition[1]};
+                    //CURRENT IS NOW PREVIOUS
+                    return findTailRecursive(current, currentPosition);
+                }
+            }
+
+        //CHECKING LEFT SQUARE
+        if (currentPosition[1]-1 >= 0)
+            if (currentPosition[0] != previousPosition[0] || currentPosition[1]-1 != previousPosition[1]) {
+                if (game[currentPosition[0]][currentPosition[1]-1]) {
+                    int[] current = {currentPosition[0], currentPosition[1]-1};
+                    //CURRENT IS NOW PREVIOUS
+                    return findTailRecursive(current, currentPosition);
+                }
+            }
+
+        //CHECKING RIGHT SQUARE
+        if (currentPosition[1]+1 < game.length)
+            if (currentPosition[0] != previousPosition[0] || currentPosition[1]+1 != previousPosition[1]) {
+                if (game[currentPosition[0]][currentPosition[1]+1]) {
+                    int[] current = {currentPosition[0], currentPosition[1]+1};
+                    //CURRENT IS NOW PREVIOUS
+                    return findTailRecursive(current, currentPosition);
+                }
+            }
+
+        return new int[]{currentPosition[0], currentPosition[1], 1};
     }
 
     private void resetCounters() {
